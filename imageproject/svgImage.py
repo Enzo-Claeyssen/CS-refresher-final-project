@@ -125,7 +125,6 @@ image_pixels = image.load()
 
 hexa_x, hexa_y = pixel_to_hex(0, 0)
 center_x, center_y = hex_center(hexa_x, hexa_y)
-print(center_x, center_y)
 
 """
 hexa_x, hexa_y = pixel_to_hex(30, 30)
@@ -135,18 +134,23 @@ angles = hex_angles(center_x, center_y)
 svg_content = f'<svg width="{image_width}" height="{image_height}">\n'
 
 
+i = 0
+center_x = 0
+while center_x < image_width :
+    center_x, center_y = hex_center(i, 0)
+    angles = hex_angles(center_x, center_y)
+    svg_content += hexagon_string(angles, "black")
+    i += 2
 
-center_x, center_y = hex_center(0, 0)
-angles = hex_angles(center_x, center_y)
-svg_content += hexagon_string(angles)
 
-center_x, center_y = hex_center(2, 0)
-angles = hex_angles(center_x, center_y)
-svg_content += hexagon_string(angles)
+i = 0
+center_x = 0
+while center_x < (image_width - HEXAGON_SIZE*2) :
+    center_x, center_y = hex_center(i+1, -1/2)
+    angles = hex_angles(center_x, center_y)
+    svg_content += hexagon_string(angles, "white")
+    i += 2
 
-center_x, center_y = hex_center(1, 1/2)
-angles = hex_angles(center_x, center_y)
-svg_content += hexagon_string(angles, "white")
 
 
 svg_content += '</svg>'
