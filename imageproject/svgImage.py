@@ -12,7 +12,7 @@ from math import cos
 from math import sin
 
 
-HEXAGON_SIZE = 50
+HEXAGON_SIZE = 100
 
 
 def pixel_to_hex(x, y) :
@@ -91,22 +91,64 @@ def hex_angles(center_x, center_y) :
     return angles
 
 
+def hexagon_string(angles, color='black') :
+    """
+    Computes the string associated to hexagon drawing
+
+    Parameters
+    ----------
+    angles : Array of Floats
+        Contains angles of the hexagon
+    color : String
+        The color to fill the hexagon with
+
+    Returns
+    -------
+    String
+    The string which permits to draw the hexagon
+
+    """
+    res = ""
+    res += f'\t<polygon fill="{color}" '
+    res += f'points="{angles[0][0]} {angles[0][1]},'
+    res += f'{angles[1][0]} {angles[1][1]},{angles[2][0]} {angles[2][1]},'
+    res += f'{angles[3][0]} {angles[3][1]},{angles[4][0]} {angles[4][1]},'
+    res += f'{angles[5][0]} {angles[5][1]}"/>\n'
+    return res
+
 
 # Import the image
 image = Image.open("./images/screenshot.jpg")
 image_width, image_height = image.size
 image_pixels = image.load()
 
+
+hexa_x, hexa_y = pixel_to_hex(0, 0)
+center_x, center_y = hex_center(hexa_x, hexa_y)
+print(center_x, center_y)
+
+"""
 hexa_x, hexa_y = pixel_to_hex(30, 30)
 center_x, center_y = hex_center(hexa_x, hexa_y)
 angles = hex_angles(center_x, center_y)
-
+"""
 svg_content = f'<svg width="{image_width}" height="{image_height}">\n'
-svg_content += f'\t<polygon points="{angles[0][0]} {angles[0][1]},'
 
-svg_content += f'{angles[1][0]} {angles[1][1]},{angles[2][0]} {angles[2][1]},'
-svg_content += f'{angles[3][0]} {angles[3][1]},{angles[4][0]} {angles[4][1]},'
-svg_content += f'{angles[5][0]} {angles[5][1]}"/>\n'
+
+
+center_x, center_y = hex_center(0, 0)
+angles = hex_angles(center_x, center_y)
+svg_content += hexagon_string(angles)
+
+center_x, center_y = hex_center(2, 0)
+angles = hex_angles(center_x, center_y)
+svg_content += hexagon_string(angles)
+
+center_x, center_y = hex_center(1, 1/2)
+angles = hex_angles(center_x, center_y)
+svg_content += hexagon_string(angles, "white")
+
+
 svg_content += '</svg>'
 
 with open('output.svg', 'w') as file :
