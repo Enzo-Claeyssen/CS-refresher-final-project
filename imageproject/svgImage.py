@@ -12,7 +12,7 @@ from math import cos
 from math import sin
 
 
-HEXAGON_SIZE = 100
+HEXAGON_SIZE = 20
 
 
 def pixel_to_hex(x, y) :
@@ -133,23 +133,30 @@ angles = hex_angles(center_x, center_y)
 """
 svg_content = f'<svg width="{image_width}" height="{image_height}">\n'
 
+j = 0
+center_y = 0
+while center_y < image_height - HEXAGON_SIZE :
+    i = 0
+    center_x = 0
+    while center_x < image_width :
+        center_x, center_y = hex_center(i, j)
+        angles = hex_angles(center_x, center_y)
+        svg_content += hexagon_string(angles, "black")
+        i += 2
+    j += 1
 
-i = 0
-center_x = 0
-while center_x < image_width :
-    center_x, center_y = hex_center(i, 0)
-    angles = hex_angles(center_x, center_y)
-    svg_content += hexagon_string(angles, "black")
-    i += 2
 
-
-i = 0
-center_x = 0
-while center_x < (image_width - HEXAGON_SIZE*2) :
-    center_x, center_y = hex_center(i+1, -1/2)
-    angles = hex_angles(center_x, center_y)
-    svg_content += hexagon_string(angles, "white")
-    i += 2
+j = 0
+center_y = 0
+while center_y < image_height :
+    i = 0
+    center_x = 0
+    while center_x < (image_width - HEXAGON_SIZE*2) :
+        center_x, center_y = hex_center(i+1, j-1/2)
+        angles = hex_angles(center_x, center_y)
+        svg_content += hexagon_string(angles, "white")
+        i += 2
+    j += 1
 
 
 
